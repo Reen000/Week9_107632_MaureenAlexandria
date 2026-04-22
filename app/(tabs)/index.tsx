@@ -8,7 +8,6 @@ import { Paths, File } from "expo-file-system";
 export default function Index() {
   const [image, setImage] = useState<string | null>(null);
 
-  // ========== OPEN CAMERA ==========
   const openCamera = async () => {
     const permission = await Camera.requestCameraPermissionsAsync();
 
@@ -27,7 +26,6 @@ export default function Index() {
     }
   };
 
-  // ========== OPEN GALLERY ==========
   const openGallery = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -46,7 +44,6 @@ export default function Index() {
     }
   };
 
-  // ========== SAVE IMAGE (TUGAS) ==========
   const saveImage = async () => {
     if (!image) {
       Alert.alert("No Image", "Please take or pick an image first!");
@@ -54,23 +51,19 @@ export default function Index() {
     }
 
     try {
-      // Minta izin media library
       const { status } = await MediaLibrary.requestPermissionsAsync(true);
       if (status !== "granted") {
         Alert.alert("Permission Denied", "Media library permission is required!");
         return;
       }
 
-      // Buat nama file baru dengan timestamp
       const fileName = `saved_image_${Date.now()}.jpg`;
 
-      // Salin file ke direktori dokumen menggunakan expo-file-system
       const sourceFile = new File(image);
       const destinationFile = new File(Paths.document, fileName);
       sourceFile.copy(destinationFile);
       const destinationUri = destinationFile.uri;
 
-      // Simpan ke gallery menggunakan MediaLibrary
       const asset = await MediaLibrary.createAssetAsync(destinationUri);
       await MediaLibrary.createAlbumAsync("MyApp Photos", asset, false);
 
@@ -83,7 +76,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Name - NIM</Text>
+      <Text style={styles.text}>Maureen Alexandria - 00000107632</Text>
 
       <View style={styles.button}>
         <Button title="OPEN CAMERA" onPress={openCamera} />
@@ -93,7 +86,6 @@ export default function Index() {
         <Button title="OPEN GALLERY" onPress={openGallery} />
       </View>
 
-      {/* Tombol SAVE IMAGE hanya muncul kalau ada gambar */}
       {image && (
         <View style={styles.button}>
           <Button title="SAVE IMAGE" onPress={saveImage} color="green" />
@@ -114,6 +106,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
+    marginBottom: 10,
+    color: "white"
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
     marginBottom: 10,
   },
   button: {
